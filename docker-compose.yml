@@ -1,0 +1,29 @@
+# Optional container path. This environment has no Docker; use ./dev.sh.
+# The web container proxies /api to the api service via API_ORIGIN.
+
+services:
+  api:
+    image: python:3.12-slim
+    working_dir: /srv
+    volumes:
+      - ./backend:/srv
+    ports:
+      - "8421:8421"
+    command: >
+      bash -lc "apt-get update -qq && apt-get install -y -qq ffmpeg >/dev/null
+      && pip install -q -r requirements.txt
+      && python -m app.seed
+      && uvicorn app.main:app --host 0.0.0.0 --port 8421"
+
+  web:
+    image: node:22-bookworm
+    working_dir: /srv
+    depends_on:
+      - api
+    environment:
+      API_ORIGIN: http://api:8421
+    volumes:
+      - ./frontend:/srv
+    ports:
+      - "4317:4317"
+    command: bash -lc "npm install && npx next dev --hostname 0.0.0.0 --port 4317"

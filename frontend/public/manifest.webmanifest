@@ -1,0 +1,12 @@
+{
+  "name": "KaamSetu",
+  "short_name": "KaamSetu",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f3eee4",
+  "theme_color": "#0c6b4d",
+  "lang": "ta",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
